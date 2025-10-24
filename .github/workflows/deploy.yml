@@ -2,7 +2,7 @@ name: Gerar e publicar site com Hugo
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 3 * * *'  # Executa diariamente às 03:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout do repositório
         uses: actions/checkout@v3
 
       - name: Instalar Hugo
@@ -23,10 +23,13 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Instalar dependências Python
+        run: pip install requests
+
       - name: Rodar script Python
         run: python atualizador_site.py
 
-      - name: Gerar site Hugo
+      - name: Gerar site com Hugo
         run: hugo
 
       - name: Publicar no GitHub Pages
